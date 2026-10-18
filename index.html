@@ -698,7 +698,11 @@ letter-spacing:-0.03em;
         <h3>Apply To Drive</h3>
         <p class="fsub">Fill in your details and upload your licence and resume. Our recruiting team will be in touch.</p>
         <div class="form-success" id="careerSuccess"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg><span>Thanks. Your application has been received. We will contact you shortly.</span></div>
-        <form id="careerForm" novalidate>
+        <form id="careerForm" action="submit.php" method="post" enctype="multipart/form-data" novalidate>
+<input type="hidden" name="form_type" value="career">
+<div style="position:absolute;left:-10000px" aria-hidden="true"><label>Leave empty<input name="website" tabindex="-1" autocomplete="off"></label></div>
+<p class="form-error" role="alert" hidden style="color:#b42318;padding:12px;border:1px solid currentColor"></p>
+<noscript>Please enable JavaScript or email accounts@toplandexpress.com to submit your request.</noscript>
           <div class="frow">
             <div class="field"><label>Full Name <span class="req">*</span></label><input type="text" name="name" required placeholder="John Smith"></div>
             <div class="field"><label>Phone <span class="req">*</span></label><input type="tel" name="phone" required placeholder="905 000 0000"></div>
@@ -735,14 +739,14 @@ letter-spacing:-0.03em;
           </div>
           <div class="field">
             <label>Driver's Licence Upload</label>
-            <label class="filefield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5-5 5 5M12 5v14"/></svg><span class="ft" data-default="PDF, JPG or PNG up to 10MB"><b>Upload licence</b><small>PDF, JPG or PNG up to 10MB</small></span><input type="file" name="licenceFile" accept=".pdf,.jpg,.jpeg,.png"></label>
+            <label class="filefield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5-5 5 5M12 5v14"/></svg><span class="ft" data-default="PDF, JPG or PNG combined limit 5MB"><b>Upload licence</b><small>PDF, JPG or PNG combined limit 5MB</small></span><input type="file" name="licenceFile" accept=".pdf,.jpg,.jpeg,.png"></label>
           </div>
           <div class="field">
             <label>Resume Upload</label>
-            <label class="filefield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg><span class="ft" data-default="PDF or DOC up to 10MB"><b>Upload resume</b><small>PDF or DOC up to 10MB</small></span><input type="file" name="resumeFile" accept=".pdf,.doc,.docx"></label>
+            <label class="filefield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg><span class="ft" data-default="PDF or DOC combined limit 5MB"><b>Upload resume</b><small>PDF or DOC combined limit 5MB</small></span><input type="file" name="resumeFile" accept=".pdf,.doc,.docx"></label>
           </div>
           <div class="field"><label>Anything Else?</label><textarea name="message" placeholder="Equipment experience, lanes you prefer, questions..."></textarea></div>
-          <label class="checkrow"><input type="checkbox" required><span>I consent to Topland Express contacting me about this application and storing my information for recruiting purposes.</span></label>
+          <label class="checkrow"><input type="checkbox" name="consent" value="yes" required><span>I consent to Topland Express contacting me about this application and storing my information for recruiting purposes.</span></label>
           <button type="submit" class="btn btn-green" style="width:100%;justify-content:center">Submit Application</button>
         </form>
       </div>
@@ -788,7 +792,11 @@ letter-spacing:-0.03em;
         <h3>Request A Quote</h3>
         <p class="fsub">Tell us about your shipment and we will send a competitive rate fast.</p>
         <div class="form-success" id="quoteSuccess"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg><span>Thanks. Your quote request has been received. Our team will reply shortly.</span></div>
-        <form id="quoteForm" novalidate>
+        <form id="quoteForm" action="submit.php" method="post" enctype="multipart/form-data" novalidate>
+<input type="hidden" name="form_type" value="quote">
+<div style="position:absolute;left:-10000px" aria-hidden="true"><label>Leave empty<input name="website" tabindex="-1" autocomplete="off"></label></div>
+<p class="form-error" role="alert" hidden style="color:#b42318;padding:12px;border:1px solid currentColor"></p>
+<noscript>Please enable JavaScript or email accounts@toplandexpress.com to submit your request.</noscript>
           <div class="frow">
             <div class="field"><label>Name <span class="req">*</span></label><input type="text" name="name" required placeholder="Your name"></div>
             <div class="field"><label>Company Name</label><input type="text" name="company" placeholder="Company"></div>
@@ -1010,22 +1018,33 @@ document.querySelectorAll('.filefield input[type=file]').forEach(inp=>{
   });
 });
 
-/* ---------- FORMS (front end only) ----------
-   To receive submissions, set the form's action to your handler
-   (Formspree, Web3Forms, or your own endpoint) and remove the preventDefault below. */
+/* ---------- FORMS ---------- */
 function handleForm(formId,successId){
-  const f=document.getElementById(formId);
-  f.addEventListener('submit',e=>{
-    e.preventDefault();
-    if(!f.checkValidity()){f.reportValidity();return;}
-    document.getElementById(successId).classList.add('show');
-    f.reset();
-    document.querySelectorAll('#'+formId+' .ft').forEach(ft=>{const b=ft.querySelector('b'),s=ft.querySelector('small');b.textContent=b.textContent.startsWith('Upload')?b.textContent:'Upload '+b.textContent;});
-    document.getElementById(successId).scrollIntoView({behavior:'smooth',block:'center'});
-  });
+ const f=document.getElementById(formId),success=document.getElementById(successId),error=f.querySelector('.form-error'),button=f.querySelector('[type=submit]');
+ const labels=Array.from(f.querySelectorAll('.ft')).map(el=>[el,el.innerHTML]);
+ f.addEventListener('submit',async e=>{
+  e.preventDefault(); success.classList.remove('show');error.hidden=true;
+  if(!f.checkValidity()){f.reportValidity();return;}
+  const files=Array.from(f.querySelectorAll('[type=file]')).flatMap(i=>Array.from(i.files));
+  if(files.reduce((n,file)=>n+file.size,0)>5*1024*1024){error.textContent='All attachments together must be under 5 MB.';error.hidden=false;return;}
+  const label=button.textContent;button.disabled=true;button.textContent='Sending…';
+  try {
+   const ready=await fetch('submit.php',{credentials:'same-origin',cache:'no-store'});
+   if(!ready.ok)throw new Error('Sending is unavailable. Please email accounts@toplandexpress.com.');
+   const session=await ready.json();
+   if(!session.token)throw new Error('Please refresh the page and try again.');
+   const data=new FormData(f);data.set('token',session.token);
+   const response=await fetch('submit.php',{method:'POST',credentials:'same-origin',body:data});
+   const result=await response.json();
+   if(!response.ok||!result.ok)throw new Error(result.message||'Sending failed. Please try again.');
+   success.classList.add('show');f.reset();labels.forEach(([el,html])=>el.innerHTML=html);
+   success.scrollIntoView({behavior:'smooth',block:'center'});
+  } catch(err) {
+   error.textContent=err instanceof SyntaxError?'Sending is unavailable. Please email accounts@toplandexpress.com.':(err.message||'Connection failed. Please try again.');error.hidden=false;
+  } finally {button.disabled=false;button.textContent=label;}
+ });
 }
-handleForm('quoteForm','quoteSuccess');
-handleForm('careerForm','careerSuccess');
+handleForm('quoteForm','quoteSuccess');handleForm('careerForm','careerSuccess');
 </script>
 </body>
 </html>
