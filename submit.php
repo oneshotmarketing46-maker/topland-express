@@ -64,10 +64,10 @@ $text=$subject."\r\n\r\n";
 foreach($data as $key=>$value) $text.=ucfirst($key).": ".$value."\r\n";
 $text.="\r\nSubmitted at: ".gmdate('c')."\r\n";
 $boundary='topland_'.bin2hex(random_bytes(16));
-$headers=['From: Topland Express Website <website@toplandexpress.com>','Reply-To: '.$email,'MIME-Version: 1.0','Content-Type: multipart/mixed; boundary="'.$boundary.'"'];
+$headers=['From: Topland Express Website <accounts@toplandexpress.com>','Reply-To: '.$email,'MIME-Version: 1.0','Content-Type: multipart/mixed; boundary="'.$boundary.'"'];
 // Construct attachment parts using CRLF for mail transport.
 $body='--'.$boundary."\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n".chunk_split(base64_encode($text));
 foreach($attachments as $a) $body.='--'.$boundary."\r\nContent-Type: ".$a['mime'].'; name="'.$a['name']."\"\r\nContent-Disposition: attachment; filename=\"".$a['name']."\"\r\nContent-Transfer-Encoding: base64\r\n\r\n".$a['body'];
 $body.='--'.$boundary."--\r\n";
-if(!function_exists('mail')||!mail('accounts@toplandexpress.com',$subject,$body,implode("\r\n",$headers))) reply(503,'We could not send your request. Please try again or email accounts@toplandexpress.com.');
+if(!function_exists('mail')||!mail('accounts@toplandexpress.com',$subject,$body,implode("\r\n",$headers),'-faccounts@toplandexpress.com')) reply(503,'We could not send your request. Please try again or email accounts@toplandexpress.com.');
 reply(200,'Your request has been submitted. Thank you.');
